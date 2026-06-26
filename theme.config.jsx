@@ -13,10 +13,10 @@ export default {
   ),
 
   project: {
-    link: 'https://github.com/yourusername/observiq',
+    link: 'https://github.com/AdarshXGupta07/OBSERVIQ-DOCS',
   },
 
-  docsRepositoryBase: 'https://github.com/yourusername/observiq/tree/main/docs',
+  docsRepositoryBase: 'https://github.com/AdarshXGupta07/OBSERVIQ-DOCS/tree/main',
 
   useNextSeoProps() {
     const { asPath } = useRouter()

@@ -29,7 +29,7 @@ import { Callout, Cards, Card } from 'nextra/components'
   </div>
 
   <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-    <a href="/docs/quickstart" style={{
+    <a href="https://symphonious-sunburst-bcd1a4.netlify.app/signup" target="_blank" style={{
       background: '#6366f1',
       color: 'white',
       padding: '12px 28px',
@@ -38,9 +38,9 @@ import { Callout, Cards, Card } from 'nextra/components'
       fontSize: 15,
       textDecoration: 'none'
     }}>
-      Get Started →
+      Create Account →
     </a>
-    <a href="https://pypi.org/project/observiq-sdk" target="_blank" style={{
+    <a href="/docs/quickstart" style={{
       background: 'transparent',
       color: '#6366f1',
       padding: '12px 28px',
@@ -50,7 +50,7 @@ import { Callout, Cards, Card } from 'nextra/components'
       textDecoration: 'none',
       border: '1px solid #6366f1'
     }}>
-      pip install observiq-sdk
+      Quick Start Guide
     </a>
   </div>
 </div>
@@ -66,11 +66,10 @@ ObservIQ is the safety net. **Two lines of Python code**, and you instantly get 
 ```python
 from observiq_sdk import ObservIQ
 
-oiq = ObservIQ(api_key="oiq_...")
-response = oiq.trace(groq.chat.completions.create)(
-    model="llama-3.3-70b-versatile",
-    messages=[{"role": "user", "content": "Hello!"}]
-)
+client = ObservIQ(api_key="oiq_...")
+
+with client.trace(model="gpt-4o-mini", feature_name="support-summary"):
+    response = call_your_ai_model()
 ```
 
 That's it. Every call is now tracked.
@@ -97,3 +96,7 @@ That's it. Every call is now tracked.
 ---
 
 ## How It Works
+
+1. **[Create a team](https://symphonious-sunburst-bcd1a4.netlify.app/signup)** — sign up, copy your API key, keep it with your application secrets.
+2. **Send traces** — wrap your AI calls with the ObservIQ SDK to capture latency, tokens, cost, status, model, and feature names.
+3. **[Monitor the dashboard](https://symphonious-sunburst-bcd1a4.netlify.app/login)** — review usage trends, model cost, feature activity, reliability, and recent traces.

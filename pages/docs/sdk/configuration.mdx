@@ -59,12 +59,10 @@ from groq import Groq
 groq_client = Groq(api_key=os.environ["GROQ_API_KEY"])
 
 async def chat_endpoint(message: str):
-    response = observiq.trace(
-        groq_client.chat.completions.create,
-        feature_name="chat"
-    )(
-        model="llama-3.3-70b-versatile",
-        messages=[{"role": "user", "content": message}]
-    )
+    with observiq.trace(model="llama-3.3-70b-versatile", feature_name="chat"):
+        response = groq_client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[{"role": "user", "content": message}]
+        )
     return response.choices[0].message.content
 ```
