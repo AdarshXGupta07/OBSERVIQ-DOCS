@@ -1,1 +1,1 @@
-https://symphonious-sunburst-bcd1a4.netlify.app/
+https://observ-iq.netlify.app/
