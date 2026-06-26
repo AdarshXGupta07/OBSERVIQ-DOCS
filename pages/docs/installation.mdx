@@ -1,0 +1,71 @@
+---
+title: Installation
+description: Install the ObservIQ Python SDK
+---
+
+import { Tabs, Callout } from 'nextra/components'
+
+# Installation
+
+## Requirements
+
+- Python **3.9** or higher
+- `pip` package manager
+- An ObservIQ account and API key
+
+## Install the SDK
+
+```bash
+pip install observiq-sdk
+```
+
+## Verify Installation
+
+```python
+import observiq_sdk
+print(observiq_sdk.__version__)
+# 0.1.0
+```
+
+## Environment Setup
+
+Never hardcode your API key. Use environment variables:
+
+<Tabs items={['.env file', 'Shell', 'Python']}>
+  <Tabs.Tab>
+```env
+OBSERVIQ_API_KEY=oiq_your_key_here
+GROQ_API_KEY=gsk_your_groq_key
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```bash
+export OBSERVIQ_API_KEY=oiq_your_key_here
+export GROQ_API_KEY=gsk_your_groq_key
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+import os
+from dotenv import load_dotenv
+from observiq_sdk import ObservIQ
+
+load_dotenv()
+
+oiq = ObservIQ(api_key=os.environ["OBSERVIQ_API_KEY"])
+```
+  </Tabs.Tab>
+</Tabs>
+
+<Callout type="error">
+  Never commit your API key to Git. Add `.env` to your `.gitignore`.
+</Callout>
+
+## Supported LLM Providers
+
+| Provider | Status | Notes |
+|----------|--------|-------|
+| Groq | ✅ Full support | All models |
+| OpenAI | ✅ Full support | GPT-4, GPT-3.5 |
+| Anthropic | ✅ Full support | Claude 3 family |
+| Any OpenAI-compatible | ✅ Works | Same API format |

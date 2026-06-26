@@ -1,0 +1,105 @@
+---
+title: Analytics API
+description: Aggregated insights from your AI traces
+---
+
+# Analytics API
+
+All analytics endpoints require authentication. Data is scoped to your team only.
+
+---
+
+## `GET /analytics/overview`
+
+Overall stats across all traces.
+
+**Response:**
+```json
+{
+  "total_calls": 1240,
+  "avg_latency_ms": 342,
+  "total_cost_usd": 2.401234,
+  "success_rate": 98.4,
+  "error_count": 20
+}
+```
+
+---
+
+## `GET /analytics/by-model`
+
+Cost and performance breakdown per AI model.
+
+**Response:**
+```json
+[
+  {
+    "model": "llama-3.3-70b-versatile",
+    "call_count": 890,
+    "avg_latency_ms": 420,
+    "total_cost_usd": 1.820000,
+    "success_rate": 99.1
+  },
+  {
+    "model": "llama-3.1-8b-instant",
+    "call_count": 350,
+    "avg_latency_ms": 180,
+    "total_cost_usd": 0.580000,
+    "success_rate": 96.8
+  }
+]
+```
+
+---
+
+## `GET /analytics/by-feature`
+
+Cost and usage breakdown per feature.
+
+**Response:**
+```json
+[
+  {
+    "feature_name": "customer_support",
+    "call_count": 720,
+    "avg_latency_ms": 380,
+    "total_cost_usd": 1.440000,
+    "success_rate": 98.6
+  },
+  {
+    "feature_name": "doc_summarizer",
+    "call_count": 520,
+    "avg_latency_ms": 290,
+    "total_cost_usd": 0.960000,
+    "success_rate": 97.9
+  }
+]
+```
+
+---
+
+## `GET /analytics/daily`
+
+Last 7 days of daily usage data. Perfect for trend charts.
+
+**Response:**
+```json
+[
+  {
+    "date": "2026-06-19",
+    "label": "Jun 19",
+    "call_count": 120,
+    "total_cost_usd": 0.240000,
+    "avg_latency_ms": 310,
+    "error_count": 2
+  },
+  {
+    "date": "2026-06-20",
+    "label": "Jun 20",
+    "call_count": 340,
+    "total_cost_usd": 0.680000,
+    "avg_latency_ms": 290,
+    "error_count": 5
+  }
+]
+```

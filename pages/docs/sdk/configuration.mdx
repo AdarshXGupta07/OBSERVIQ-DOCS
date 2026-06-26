@@ -1,0 +1,70 @@
+---
+title: Configuration
+description: SDK configuration options
+---
+
+# Configuration
+
+## Full Configuration Example
+
+```python
+from observiq_sdk import ObservIQ
+
+oiq = ObservIQ(
+    api_key="oiq_your_key_here",
+    base_url="https://your-backend.railway.app",
+    enabled=True
+)
+```
+
+## Configuration Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `api_key` | `str` | required | Your ObservIQ API key starting with `oiq_` |
+| `base_url` | `str` | `http://localhost:8000` | URL of your ObservIQ backend |
+| `enabled` | `bool` | `True` | Toggle tracing on/off |
+
+## Using with Environment Variables
+
+```python
+import os
+from observiq_sdk import ObservIQ
+
+oiq = ObservIQ(
+    api_key=os.environ["OBSERVIQ_API_KEY"],
+    base_url=os.environ.get("OBSERVIQ_URL", "http://localhost:8000"),
+    enabled=os.environ.get("OBSERVIQ_ENABLED", "true").lower() == "true"
+)
+```
+
+## Using with Django / FastAPI
+
+```python
+# settings.py or config.py — initialize once, import everywhere
+from observiq_sdk import ObservIQ
+import os
+
+observiq = ObservIQ(
+    api_key=os.environ["OBSERVIQ_API_KEY"],
+    base_url=os.environ["OBSERVIQ_URL"]
+)
+```
+
+```python
+# views.py / routes.py
+from config import observiq
+from groq import Groq
+
+groq_client = Groq(api_key=os.environ["GROQ_API_KEY"])
+
+async def chat_endpoint(message: str):
+    response = observiq.trace(
+        groq_client.chat.completions.create,
+        feature_name="chat"
+    )(
+        model="llama-3.3-70b-versatile",
+        messages=[{"role": "user", "content": message}]
+    )
+    return response.choices[0].message.content
+```

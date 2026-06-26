@@ -1,0 +1,85 @@
+---
+title: Authentication
+description: How to authenticate with the ObservIQ API
+---
+
+import { Callout } from 'nextra/components'
+
+# Authentication
+
+ObservIQ uses **Bearer token authentication**. Every API request must include your API key in the `Authorization` header.
+
+## Getting Your API Key
+
+1. Register at your ObservIQ dashboard
+2. Your API key is shown **once** after registration — copy it immediately
+3. Keys follow the format: `oiq_` followed by 64 hex characters
+
+## Using Your API Key
+
+```bash
+curl https://your-backend.railway.app/teams/me \
+  -H "Authorization: Bearer oiq_your_key_here"
+```
+
+```python
+import requests
+
+headers = {"Authorization": "Bearer oiq_your_key_here"}
+response = requests.get("https://your-backend.railway.app/teams/me", headers=headers)
+print(response.json())
+```
+
+<Callout type="warning">
+  Never expose your API key in client-side code. Always use it server-side or via the Python SDK.
+</Callout>
+
+## Endpoints
+
+### `POST /teams/register`
+
+Create a new team and receive your API key.
+
+**Request:**
+```json
+{
+  "name": "My Startup",
+  "email": "dev@mystartup.com"
+}
+```
+
+**Response:**
+```json
+{
+  "id": "uuid",
+  "name": "My Startup",
+  "email": "dev@mystartup.com",
+  "api_key": "oiq_a1b2c3...",
+  "plan": "free",
+  "message": "Save your API key now — it won't be shown again!"
+}
+```
+
+### `GET /teams/me`
+
+Get your team information. Used to verify your API key.
+
+**Response:**
+```json
+{
+  "id": "uuid",
+  "name": "My Startup",
+  "email": "dev@mystartup.com",
+  "api_key_prefix": "oiq_a1b2c3d4",
+  "plan": "free",
+  "created_at": "2026-06-25T14:32:01Z"
+}
+```
+
+## Error Responses
+
+| Status | Meaning |
+|--------|---------|
+| `401` | Missing or invalid API key |
+| `400` | Bad request (e.g. email already registered) |
+| `500` | Server error |

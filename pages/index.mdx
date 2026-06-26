@@ -1,0 +1,99 @@
+---
+title: ObservIQ — AI Application Monitoring
+---
+
+import { Callout, Cards, Card } from 'nextra/components'
+
+<div style={{
+  textAlign: 'center',
+  padding: '4rem 0 2rem'
+}}>
+  <h1 style={{
+    fontSize: '3rem',
+    fontWeight: 800,
+    background: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    marginBottom: '1rem',
+    lineHeight: 1.1
+  }}>
+    Monitor Your AI in Production
+  </h1>
+  <div style={{
+    fontSize: '1.2rem',
+    color: '#64748b',
+    maxWidth: 560,
+    margin: '0 auto 2rem'
+  }}>
+    ObservIQ gives you real-time visibility into every AI call your application makes — latency, cost, quality, and anomalies.
+  </div>
+
+  <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+    <a href="/docs/quickstart" style={{
+      background: '#6366f1',
+      color: 'white',
+      padding: '12px 28px',
+      borderRadius: 8,
+      fontWeight: 600,
+      fontSize: 15,
+      textDecoration: 'none'
+    }}>
+      Get Started →
+    </a>
+    <a href="https://pypi.org/project/observiq-sdk" target="_blank" style={{
+      background: 'transparent',
+      color: '#6366f1',
+      padding: '12px 28px',
+      borderRadius: 8,
+      fontWeight: 600,
+      fontSize: 15,
+      textDecoration: 'none',
+      border: '1px solid #6366f1'
+    }}>
+      pip install observiq-sdk
+    </a>
+  </div>
+</div>
+
+---
+
+## Why ObservIQ?
+
+Every company is spending money on AI APIs but flying completely blind in production. When your AI starts hallucinating, giving wrong answers, or burning through your budget — you have no idea.
+
+ObservIQ is the safety net. **Two lines of Python code**, and you instantly get full visibility into every AI call your app makes.
+
+```python
+from observiq_sdk import ObservIQ
+
+oiq = ObservIQ(api_key="oiq_...")
+response = oiq.trace(groq.chat.completions.create)(
+    model="llama-3.3-70b-versatile",
+    messages=[{"role": "user", "content": "Hello!"}]
+)
+```
+
+That's it. Every call is now tracked.
+
+---
+
+## Features
+
+<Cards>
+  <Card title="⚡ Real-time Traces" href="/docs/quickstart">
+    <span>See every AI call as it happens — model, input, output, latency, tokens, and cost.</span>
+  </Card>
+  <Card title="📊 Cost Analytics" href="/docs/sdk/python">
+    <span>Break down spending by model, feature, and user. Know exactly where your AI budget goes.</span>
+  </Card>
+  <Card title="🔍 Anomaly Detection" href="/docs/quickstart">
+    <span>AI-powered quality scoring that automatically flags bad responses, slow calls, and errors.</span>
+  </Card>
+  <Card title="🔑 Multi-tenant" href="/docs/api/authentication">
+    <span>Isolated workspaces for every team. Enterprise-grade security with zero extra config.</span>
+  </Card>
+</Cards>
+
+---
+
+## How It Works

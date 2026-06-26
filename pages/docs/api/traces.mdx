@@ -1,0 +1,99 @@
+---
+title: Traces API
+description: Send and retrieve AI call traces
+---
+
+# Traces API
+
+## `POST /traces`
+
+Record a single AI call trace.
+
+**Headers:**
+
+```
+Authorization: Bearer oiq_your_key_here
+Content-Type: application/json
+```
+
+**Request Body:**
+```json
+{
+  "model": "llama-3.3-70b-versatile",
+  "input": "What is the capital of France?",
+  "output": "The capital of France is Paris.",
+  "prompt_tokens": 15,
+  "completion_tokens": 9,
+  "latency_ms": 342,
+  "cost_usd": 0.000021,
+  "status": "success",
+  "feature_name": "geography_quiz",
+  "user_identifier": "user_123"
+}
+```
+
+**Response:**
+```json
+{
+  "id": "a4d266f6-14b8-4ac1-9660-f22246524b89",
+  "team_id": "bd283139-7e31-423a-b2aa-2fc2a94cb7d1",
+  "model": "llama-3.3-70b-versatile",
+  "input": "What is the capital of France?",
+  "output": "The capital of France is Paris.",
+  "prompt_tokens": 15,
+  "completion_tokens": 9,
+  "latency_ms": 342,
+  "cost_usd": 0.000021,
+  "status": "success",
+  "feature_name": "geography_quiz",
+  "user_identifier": "user_123",
+  "created_at": "2026-06-25T14:32:01.771733Z"
+}
+```
+
+### Request Fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `model` | `string` | ✅ | Model name |
+| `input` | `string` | ❌ | User's prompt |
+| `output` | `string` | ❌ | AI's response |
+| `prompt_tokens` | `integer` | ❌ | Input token count |
+| `completion_tokens` | `integer` | ❌ | Output token count |
+| `latency_ms` | `integer` | ❌ | Response time in ms |
+| `cost_usd` | `float` | ❌ | Cost in USD |
+| `status` | `string` | ❌ | `success` or `error` |
+| `error_message` | `string` | ❌ | Error details if failed |
+| `feature_name` | `string` | ❌ | Feature label for analytics |
+| `user_identifier` | `string` | ❌ | User ID for per-user analytics |
+
+---
+
+## `GET /traces`
+
+Get your team's recent traces with pagination.
+
+**Query Parameters:**
+
+| Param | Default | Description |
+|-------|---------|-------------|
+| `page` | `1` | Page number |
+| `limit` | `20` | Traces per page (max 100) |
+
+**Response:**
+```json
+{
+  "traces": [...],
+  "total": 1240,
+  "page": 1,
+  "limit": 20
+}
+```
+
+---
+
+## `GET /traces/{trace_id}`
+
+Get a single trace by ID.
+
+**Response:** Same as single trace object above.

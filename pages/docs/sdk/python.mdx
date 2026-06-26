@@ -1,0 +1,162 @@
+---
+title: Python SDK
+description: Complete reference for the ObservIQ Python SDK
+---
+
+import { Callout, Tabs } from 'nextra/components'
+
+# Python SDK
+
+## Installation
+
+```bash
+pip install observiq-sdk
+```
+
+## Initialization
+
+```python
+from observiq_sdk import ObservIQ
+
+oiq = ObservIQ(
+    api_key="oiq_your_key_here",
+    base_url="https://your-backend.railway.app",  # your deployed backend
+    enabled=True   # set False to disable in tests
+)
+```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `api_key` | `str` | ✅ | — | Your ObservIQ API key |
+| `base_url` | `str` | ❌ | `http://localhost:8000` | Your backend URL |
+| `enabled` | `bool` | ❌ | `True` | Set `False` to disable tracing |
+
+---
+
+## `oiq.trace()`
+
+Wraps any AI function call to automatically capture trace data.
+
+```python
+traced_fn = oiq.trace(
+    func,                           # the function to wrap
+    feature_name="my_feature",      # optional label for analytics
+    user_identifier="user_123"      # optional user ID for per-user breakdown
+)
+```
+
+### With Groq
+
+```python
+from groq import Groq
+from observiq_sdk import ObservIQ
+
+groq_client = Groq(api_key="gsk_...")
+oiq = ObservIQ(api_key="oiq_...")
+
+response = oiq.trace(groq_client.chat.completions.create)(
+    model="llama-3.3-70b-versatile",
+    messages=[{"role": "user", "content": "Explain quantum computing"}],
+    max_tokens=200
+)
+```
+
+### With OpenAI
+
+```python
+from openai import OpenAI
+from observiq_sdk import ObservIQ
+
+openai_client = OpenAI(api_key="sk-...")
+oiq = ObservIQ(api_key="oiq_...")
+
+response = oiq.trace(openai_client.chat.completions.create)(
+    model="gpt-4o",
+    messages=[{"role": "user", "content": "Hello!"}]
+)
+```
+
+### With Anthropic
+
+```python
+import anthropic
+from observiq_sdk import ObservIQ
+
+client = anthropic.Anthropic(api_key="sk-ant-...")
+oiq = ObservIQ(api_key="oiq_...")
+
+response = oiq.trace(client.messages.create)(
+    model="claude-sonnet-4-6",
+    max_tokens=1024,
+    messages=[{"role": "user", "content": "Hello!"}]
+)
+```
+
+---
+
+## Feature Names
+
+Use `feature_name` to group traces by the feature of your app that made the call.
+This shows up in the **Analytics** section of your dashboard.
+
+```python
+# Customer support feature
+support_fn = oiq.trace(
+    groq_client.chat.completions.create,
+    feature_name="customer_support"
+)
+
+# Document summarizer feature
+summary_fn = oiq.trace(
+    groq_client.chat.completions.create,
+    feature_name="doc_summarizer"
+)
+```
+
+Your dashboard will then show:
+
+```
+Feature Breakdown:
+
+customer_support  → 1,240 calls, $2.40/day
+
+doc_summarizer    → 340 calls,  $0.80/day
+```
+
+---
+
+## Error Handling
+
+ObservIQ **never crashes your app**. If the SDK fails to send a trace, it logs a warning and continues silently.
+
+```python
+# This still works even if ObservIQ server is down
+try:
+    response = oiq.trace(groq_client.chat.completions.create)(
+        model="llama-3.3-70b-versatile",
+        messages=[{"role": "user", "content": "Hello"}]
+    )
+except groq.APIError as e:
+    # Only actual Groq errors are raised
+    print(f"Groq error: {e}")
+```
+
+<Callout type="info">
+  Traces are sent in a **background thread** so your app's response time is never affected.
+</Callout>
+
+---
+
+## Disable in Tests
+
+```python
+import os
+from observiq_sdk import ObservIQ
+
+oiq = ObservIQ(
+    api_key="oiq_...",
+    enabled=os.environ.get("ENV") != "test"
+)
+```
